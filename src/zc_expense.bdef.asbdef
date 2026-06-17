@@ -1,0 +1,26 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZC_EXPENSE alias Expense
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Resume;
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Prepare;
+
+  use association _expenseList { create; with draft; }
+}
+
+define behavior for ZC_EXPENSE_LIST alias ExpenseList
+{
+  use update;
+  use delete;
+
+  use association _expense { with draft; }
+}

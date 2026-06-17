@@ -1,0 +1,5 @@
+@EndUserText.label: 'Expense Service Definition'
+define service ZEXPENSE_SD {
+  expose ZC_EXPENSE      as Expense;
+  expose ZC_EXPENSE_LIST as ExpenseList;
+}

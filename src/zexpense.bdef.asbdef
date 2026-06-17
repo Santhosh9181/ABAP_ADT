@@ -1,0 +1,69 @@
+managed implementation in class zbp_expense unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZEXPENSE alias Expense
+persistent table zexpenses
+draft table zdexpense
+lock master
+total etag LastChangedAt
+authorization master ( instance )
+etag master LocalLastChangedAt
+
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly, numbering : managed ) ExpenseUUID;
+  association _expenseList { create; with draft; }
+
+  draft action Resume with additional implementation;
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft determine action Prepare;
+
+  mapping for zexpenses
+    {
+      ExpenseUUID        = exp_uuid;
+      ExpenseId          = expense_id;
+      CurrencyKey        = currency_key;
+      ExpenseDate        = expense_date;
+      ExpenseTotal       = expense_total;
+      LastChangedAt      = last_changed_at;
+      LocalCreatedBy     = local_created_by;
+      LocalCreatedAt     = local_created_at;
+      LocalLastChangedAt = local_last_changed_at;
+      LocalLastChangedBy = local_last_changed_by;
+    }
+}
+
+define behavior for ZEXPENSE_LIST alias ExpenseList
+draft table zdexplist
+persistent table zexpenses_list
+lock dependent by _expense
+authorization dependent by _expense
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( numbering : managed, readonly ) ExpenselistUuid;
+  field ( readonly ) ExpenseUUID;
+  association _expense { with draft; }
+
+  mapping for zexpenses_list
+    {
+      ExpenseId          = expense_id;
+      ExpenseUUID        = expense_uuid;
+      ExpenselistUuid    = expenselist_uuid;
+      ExpenselistId      = expenselist_id;
+      CurrencyKey        = currency_key;
+      ExpenseAmount      = expense_amount;
+      ExpenseType        = expense_type;
+      LastChangedAt      = last_changed_at;
+      LocalCreatedBy     = local_created_by;
+      LocalCreatedAt     = local_created_at;
+      LocalLastChangedAt = local_last_changed_at;
+      LocalLastChangedBy = local_last_changed_by;
+    }
+}
