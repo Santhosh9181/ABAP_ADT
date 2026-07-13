@@ -1,6 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Consumption view Expense'
 @Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
 define root view entity ZC_EXPENSE provider contract transactional_query as projection on ZEXPENSE
 {
     key ExpenseUUID,
@@ -9,6 +10,7 @@ define root view entity ZC_EXPENSE provider contract transactional_query as proj
     @Semantics.amount.currencyCode: 'CurrencyKey'
     ExpenseTotal,
     CurrencyKey,
+    ExpenseStatus,
     LocalCreatedBy,
     LocalCreatedAt,
     LocalLastChangedBy,

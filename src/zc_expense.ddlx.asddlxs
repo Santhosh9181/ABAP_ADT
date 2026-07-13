@@ -1,0 +1,32 @@
+@Metadata.layer: #CORE
+@UI: { headerInfo: { typeName: 'Expense List',
+                     typeNamePlural: 'Expenses List',
+                     title: { type: #STANDARD, value: 'ExpenselistId' } } }
+
+annotate entity ZC_EXPENSE_LIST
+    with 
+{
+    @UI.facet: [{ id:          'ExpenseList',
+                purpose:       #STANDARD,
+                type:          #IDENTIFICATION_REFERENCE,
+                label:         'Expense List',
+                position:      10 }]
+    @UI.hidden: true
+    ExpenselistUuid;
+//    @UI.hidden: true
+//    ExpenseUUID;
+//    @UI.hidden: true
+//    ExpenseId;
+    @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }]  }
+    @EndUserText.label: 'Expense List ID'
+    ExpenselistId;
+    @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }]  }
+    @EndUserText.label: 'Expense Type'
+    ExpenseType;
+    @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }]  }
+    @EndUserText.label: 'Expense Amount'
+    ExpenseAmount;
+    @EndUserText.label: 'Currency'
+    CurrencyKey;
+    
+}

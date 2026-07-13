@@ -1,11 +1,12 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Consumption view Expense List'
 @Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
 define view entity ZC_EXPENSE_LIST as projection on ZEXPENSE_LIST
 {
     key ExpenselistUuid,
     ExpenseUUID,
-    ExpenseId,
+//    ExpenseId,
     ExpenselistId,
     ExpenseType,
     @Semantics.amount.currencyCode: 'CurrencyKey'

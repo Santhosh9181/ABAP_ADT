@@ -2,20 +2,45 @@ managed implementation in class zbp_expense unique;
 strict ( 2 );
 with draft;
 
+
+
+//with privileged mode disabling
+//define authorization context NoCheckWhenPrivileged { '/DMO/TRVL'; }
+//define own authorization context by privileged mode;
+
 define behavior for ZEXPENSE alias Expense
 persistent table zexpenses
 draft table zdexpense
 lock master
 total etag LastChangedAt
-authorization master ( instance )
+authorization master ( global, instance )
 etag master LocalLastChangedAt
 
+
 {
-  create ( authorization : global );
+  create { default function; }
   update;
   delete;
   field ( readonly, numbering : managed ) ExpenseUUID;
-  association _expenseList { create; with draft; }
+  //  field( readonly ) ExpenseId,ExpenseTotal;
+  field ( readonly ) ExpenseTotal;
+
+  field ( mandatory : create ) ExpenseDate;
+  field ( readonly : update ) ExpenseDate;
+
+  field ( readonly : create ) ExpenseStatus;
+  association _expenseList { create ( features : instance ); with draft; }
+
+
+  action setStatusClosed result [1] $self;
+  action changeDate
+    parameter ZA_EXP_PARA
+    result [1] $self;
+
+ static action checkEntry result [0..*] ZA_EXP_PARA;
+
+ static factory action createEntry [1] ;
+ factory action copyEntry [1] ;
 
   draft action Resume with additional implementation;
   draft action Edit;
@@ -30,6 +55,7 @@ etag master LocalLastChangedAt
       CurrencyKey        = currency_key;
       ExpenseDate        = expense_date;
       ExpenseTotal       = expense_total;
+      ExpenseStatus      = status;
       LastChangedAt      = last_changed_at;
       LocalCreatedBy     = local_created_by;
       LocalCreatedAt     = local_created_at;
@@ -45,7 +71,7 @@ lock dependent by _expense
 authorization dependent by _expense
 etag master LocalLastChangedAt
 {
-  update;
+  update ( features : instance );
   delete;
   field ( numbering : managed, readonly ) ExpenselistUuid;
   field ( readonly ) ExpenseUUID;
@@ -53,7 +79,8 @@ etag master LocalLastChangedAt
 
   mapping for zexpenses_list
     {
-      ExpenseId          = expense_id;
+
+      //      ExpenseId          = expense_id;
       ExpenseUUID        = expense_uuid;
       ExpenselistUuid    = expenselist_uuid;
       ExpenselistId      = expenselist_id;

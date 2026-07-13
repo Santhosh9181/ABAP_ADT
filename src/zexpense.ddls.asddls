@@ -2,6 +2,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Expense'
 @Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
 define root view entity ZEXPENSE
   as select from zexpenses as _expense
   composition [0..*] of ZEXPENSE_LIST as _expenseList
@@ -12,6 +13,7 @@ define root view entity ZEXPENSE
       @Semantics.amount.currencyCode: 'CurrencyKey'
       expense_total         as ExpenseTotal,
       currency_key          as CurrencyKey,
+      status                as ExpenseStatus,
       @Semantics.user.createdBy: true
       local_created_by      as LocalCreatedBy,
       @Semantics.systemDateTime.createdAt: true

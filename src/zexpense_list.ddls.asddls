@@ -8,7 +8,7 @@ define view entity ZEXPENSE_LIST
 {
   key expenselist_uuid      as ExpenselistUuid,
       expense_uuid          as ExpenseUUID,
-      expense_id            as ExpenseId,
+//      expense_id            as ExpenseId,
       expenselist_id        as ExpenselistId,
       expense_type          as ExpenseType,
       @Semantics.amount.currencyCode: 'CurrencyKey'
